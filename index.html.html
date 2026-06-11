@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>מבחן מילים חכם</title>
+<style>
+  :root {
+    --bg: #f0f4ff;
+    --white: #ffffff;
+    --card: #ffffff;
+    --accent: #4f6ef7;
+    --accent-light: #eef1ff;
+    --accent2: #f7a24f;
+    --correct: #2ebc7a;
+    --correct-light: #e6f9f1;
+    --wrong: #e0455a;
+    --wrong-light: #fdeef0;
+    --text: #1a1d2e;
+    --muted: #7a7f9a;
+    --border: #dde3f5;
+    --shadow: 0 2px 16px rgba(79,110,247,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: -apple-system, 'Segoe UI', Arial, sans-serif;
+    color: var(--text);
+    direction: rtl;
+  }
+
+  /* SCREENS */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* SETUP SCREEN */
+  .setup-wrap {
+    max-width: 480px; margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    flex: 1;
+  }
+  .app-title {
+    text-align: center;
+  }
+  .app-title .emoji { font-size: 48px; display: block; margin-bottom: 8px; }
+  .app-title h1 { font-size: 26px; font-weight: 800; color: var(--text); }
+  .app-title p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .setup-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    display: flex; flex-direction: column; gap: 1.25rem;
+  }
+  .setup-card h2 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: -4px; }
+
+  .field-label { font-size: 13px; font-weight: 600; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.3px; }
+
+  /* GRADE GRID */
+  .grade-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .grade-btn {
+    background: var(--accent-light);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 10px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .grade-btn:hover { border-color: var(--accent); }
+  .grade-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* DIFFICULTY */
+  .diff-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .diff-btn {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    background: var(--white);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .diff-btn .diff-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .diff-btn.easy { color: var(--correct); }
+  .diff-btn.easy.selected { background: var(--correct-light); border-color: var(--correct); }
+  .diff-btn.medium { color: var(--accent2); }
+  .diff-btn.medium.selected { background: #fff8ee; border-color: var(--accent2); }
+  .diff-btn.hard { color: var(--wrong); }
+  .diff-btn.hard.selected { background: var(--wrong-light); border-color: var(--wrong); }
+
+  /* NAME INPUT */
+  .name-input {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+    direction: rtl;
+  }
+  .name-input:focus { border-color: var(--accent); }
+
+  /* Q COUNT */
+  .qcount-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .qcount-btn {
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+    background: var(--white);
+    color: var(--muted);
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .qcount-btn.selected { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* START BUTTON */
+  .start-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 16px;
+    padding: 16px;
+    font-size: 17px;
+    font-weight: 800;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    transition: transform 0.12s, background 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    margin-top: 4px;
+  }
+  .start-btn:active { transform: scale(0.98); }
+  .start-btn:hover { background: #3d5ae0; }
+  .start-btn:disabled { background: var(--border); color: var(--muted); cursor: default; }
+
+  /* LOADING SCREEN */
+  .loading-wrap {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1.5rem; padding: 2rem;
+    text-align: center;
+  }
+  .spinner {
+    width: 56px; height: 56px;
+    border: 4px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-wrap h2 { font-size: 20px; font-weight: 700; }
+  .loading-wrap p { font-size: 14px; color: var(--muted); }
+
+  /* QUIZ SCREEN */
+  .quiz-wrap {
+    max-width: 520px; margin: 0 auto;
+    padding: 1.25rem 1rem 2.5rem;
+    display: flex; flex-direction: column;
+    gap: 1rem; flex: 1;
+  }
+  .quiz-header { display: flex; justify-content: space-between; align-items: center; }
+  .quiz-header .level-tag {
+    font-size: 12px; font-weight: 700; color: var(--accent);
+    background: var(--accent-light); padding: 4px 12px;
+    border-radius: 99px; letter-spacing: 0.3px;
+  }
+  .quiz-header .score-tag {
+    font-size: 13px; font-weight: 700; color: var(--muted);
+  }
+
+  .prog-track { height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 99px; transition: width 0.4s; }
+
+  .q-card {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 1.75rem 1.5rem 1.5rem;
+    box-shadow: var(--shadow);
+  }
+  .q-num { font-size: 12px; color: var(--muted); font-weight: 600; margin-bottom: 8px; letter-spacing: 0.3px; }
+  .q-word { font-size: clamp(28px, 9vw, 44px); font-weight: 800; color: var(--text); margin-bottom: 4px; }
+  .q-hint { font-size: 13px; color: var(--muted); margin-bottom: 1.25rem; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .opt {
+    background: var(--accent-light);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.13s;
+    -webkit-tap-highlight-color: transparent;
+    line-height: 1.3;
+  }
+  .opt:active { transform: scale(0.97); }
+  .opt:not(:disabled):hover { border-color: var(--accent); background: #e0e7ff; }
+  .opt.correct { background: var(--correct-light); border-color: var(--correct); color: #1a7a52; }
+  .opt.wrong   { background: var(--wrong-light);   border-color: var(--wrong);   color: #a01f2e; }
+  .opt:disabled { cursor: default; }
+
+  .feedback {
+    min-height: 32px; margin-top: 12px;
+    font-size: 14px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .feedback.show { opacity: 1; }
+  .feedback.ok { color: var(--correct); }
+  .feedback.no { color: var(--wrong); }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; }
+  .nav-btn {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-size: 14px; font-weight: 700;
+    font-family: inherit;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-btn:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn.primary {
+    background: var(--accent); border-color: var(--accent);
+    color: #fff;
+  }
+  .nav-btn.primary:not(:disabled):hover { background: #3d5ae0; }
+
+  /* STREAK */
+  .streak-toast {
+    position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+    background: var(--accent2); color: #fff;
+    font-weight: 800; font-size: 14px;
+    padding: 8px 20px; border-radius: 99px;
+    pointer-events: none; z-index: 999;
+    opacity: 0; transition: opacity 0.25s;
+    white-space: nowrap;
+    box-shadow: 0 4px 16px rgba(247,162,79,0.35);
+  }
+  .streak-toast.show { opacity: 1; }
+
+  /* SCORE SCREEN */
+  .result-wrap {
+    max-width: 420px; margin: 0 auto;
+    padding: 2.5rem 1.25rem 3rem;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    gap: 1rem; flex: 1; justify-content: center;
+  }
+  .result-emoji { font-size: 64px; }
+  .result-score { font-size: 52px; font-weight: 900; color: var(--accent); line-height: 1; }
+  .result-of { font-size: 16px; color: var(--muted); margin-top: 2px; }
+  .result-title { font-size: 22px; font-weight: 800; }
+  .result-msg { font-size: 15px; color: var(--muted); line-height: 1.6; max-width: 280px; }
+  .result-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 8px; }
+  .result-btn {
+    border-radius: 14px; padding: 14px;
+    font-size: 16px; font-weight: 800;
+    font-family: inherit; cursor: pointer;
+    width: 100%; border: none;
+    transition: transform 0.12s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .result-btn:active { transform: scale(0.98); }
+  .result-btn.primary { background: var(--accent); color: #fff; }
+  .result-btn.primary:hover { background: #3d5ae0; }
+  .result-btn.secondary { background: var(--white); color: var(--accent); border: 2px solid var(--border); }
+  .result-btn.secondary:hover { border-color: var(--accent); }
+
+  /* ERROR */
+  .error-box {
+    background: var(--wrong-light); border: 2px solid var(--wrong);
+    border-radius: 14px; padding: 1rem 1.25rem;
+    font-size: 14px; color: var(--wrong);
+    line-height: 1.6; text-align: center;
+  }
+
+  @media (max-width: 380px) {
+    .options { grid-template-columns: 1fr; }
+    .grade-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<div class="streak-toast" id="streak-toast"></div>
+
+<!-- SETUP SCREEN -->
+<div class="screen active" id="screen-setup">
+  <div class="setup-wrap">
+    <div class="app-title">
+      <span class="emoji">🧠</span>
+      <h1>מבחן מילים חכם</h1>
+      <p>AI בוחר מילים המתאימות לרמה שלך</p>
+    </div>
+
+    <div class="setup-card">
+      <h2>הגדרות המבחן</h2>
+
+      <div>
+        <div class="field-label">שם התלמיד (אופציונלי)</div>
+        <input class="name-input" id="student-name" type="text" placeholder="למשל: איתי" />
+      </div>
+
+      <div>
+        <div class="field-label">כיתה</div>
+        <div class="grade-grid" id="grade-grid">
+          <button class="grade-btn" data-grade="1">א'</button>
+          <button class="grade-btn" data-grade="2">ב'</button>
+          <button class="grade-btn" data-grade="3">ג'</button>
+          <button class="grade-btn" data-grade="4">ד'</button>
+          <button class="grade-btn" data-grade="5">ה'</button>
+          <button class="grade-btn" data-grade="6">ו'</button>
+          <button class="grade-btn" data-grade="7">ז'</button>
+          <button class="grade-btn" data-grade="8">ח'</button>
+          <button class="grade-btn" data-grade="9">ט'</button>
+          <button class="grade-btn" data-grade="10">י'</button>
+          <button class="grade-btn" data-grade="11">י"א</button>
+          <button class="grade-btn" data-grade="12">י"ב</button>
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label">רמת קושי</div>
+        <div class="diff-row">
+          <button class="diff-btn easy" data-diff="easy">
+            <span class="diff-icon">😊</span>קל
+          </button>
+          <button class="diff-btn medium" data-diff="medium">
+            <span class="diff-icon">😤</span>בינוני
+          </button>
+          <button class="diff-btn hard" data-diff="hard">
+            <span class="diff-icon">🔥</span>קשה
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <div class="field-label">מספר שאלות</div>
+        <div class="qcount-row">
+          <button class="qcount-btn" data-count="10">10</button>
+          <button class="qcount-btn selected" data-count="20">20</button>
+          <button class="qcount-btn" data-count="30">30</button>
+          <button class="qcount-btn" data-count="40">40</button>
+        </div>
+      </div>
+
+      <div id="error-setup" style="display:none"></div>
+    </div>
+
+    <button class="start-btn" id="start-btn" onclick="startQuiz()">התחל מבחן ✨</button>
+  </div>
+</div>
+
+<!-- LOADING SCREEN -->
+<div class="screen" id="screen-loading">
+  <div class="loading-wrap">
+    <div class="spinner"></div>
+    <h2>מכין את המבחן...</h2>
+    <p id="loading-msg">ה-AI בוחר מילים מתאימות לרמה שלך</p>
+  </div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="screen" id="screen-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-header">
+      <div class="level-tag" id="level-tag"></div>
+      <div class="score-tag" id="score-tag">ניקוד: 0</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div id="quiz-body"></div>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="screen" id="screen-result">
+  <div class="result-wrap" id="result-wrap"></div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+let cfg = { grade: null, diff: null, count: 20, name: '' };
+let questions = [], current = 0, score = 0, answers = [], streak = 0, streakTimer;
+
+// ─── Setup UI ────────────────────────────────────────────
+document.querySelectorAll('.grade-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.grade-btn').forEach(x => x.classList.remove('selected'));
+    b.classList.add('selected');
+    cfg.grade = parseInt(b.dataset.grade);
+  });
+});
+document.querySelectorAll('.diff-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(x => x.classList.remove('selected'));
+    b.classList.add('selected');
+    cfg.diff = b.dataset.diff;
+  });
+});
+document.querySelectorAll('.qcount-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.qcount-btn').forEach(x => x.classList.remove('selected'));
+    b.classList.add('selected');
+    cfg.count = parseInt(b.dataset.count);
+  });
+});
+
+// ─── Screen helper ───────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── Start ───────────────────────────────────────────────
+async function startQuiz() {
+  cfg.name = document.getElementById('student-name').value.trim();
+  if (!cfg.grade || !cfg.diff) {
+    const err = document.getElementById('error-setup');
+    err.style.display = 'block';
+    err.innerHTML = '<div class="error-box">⚠️ נא לבחור כיתה ורמת קושי לפני שמתחילים</div>';
+    return;
+  }
+  document.getElementById('error-setup').style.display = 'none';
+  showScreen('screen-loading');
+  try {
+    await generateQuestions();
+    initQuiz();
+    showScreen('screen-quiz');
+  } catch(e) {
+    showScreen('screen-setup');
+    const err = document.getElementById('error-setup');
+    err.style.display = 'block';
+    err.innerHTML = `<div class="error-box">❌ שגיאה בטעינה: ${e.message}<br>נסה שוב — יש לוודא שיש חיבור לאינטרנט</div>`;
+  }
+}
+
+// ─── AI Question Generation ──────────────────────────────
+async function generateQuestions() {
+  const diffMap = { easy: 'קל / בסיסי', medium: 'בינוני', hard: 'קשה / מתקדם' };
+  const prompt = `You are a vocabulary quiz generator for Israeli students learning English.
+
+Generate exactly ${cfg.count} vocabulary quiz questions for:
+- Grade: ${cfg.grade} (Israeli school system)
+- Difficulty: ${diffMap[cfg.diff]}
+
+Rules:
+- Each question: one English word/phrase → correct Hebrew translation + 4 wrong Hebrew distractors
+- Distractors must be plausible (same part of speech, similar domain) but clearly wrong
+- Words should be age-appropriate and relevant to Israeli school curriculum for grade ${cfg.grade}
+- For grades 1-4: very common basic words
+- For grades 5-7: intermediate everyday vocabulary  
+- For grades 8-10: more advanced vocabulary, idioms, phrasal verbs
+- For grades 11-12: advanced academic and literary vocabulary
+- Difficulty modifier: ${cfg.diff === 'easy' ? 'use the most common/basic words for this grade' : cfg.diff === 'hard' ? 'use challenging, less common words for this grade' : 'use typical words for this grade'}
+
+Respond ONLY with a valid JSON array, no markdown, no explanation:
+[
+  {"word": "hello", "correct": "שלום", "distractors": ["חבר","ביי","בוקר טוב","לילה טוב"]},
+  ...
+]`;
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = data.content.map(b => b.text || '').join('').trim();
+  const clean = text.replace(/```json|```/g, '').trim();
+
+  let parsed;
+  try { parsed = JSON.parse(clean); }
+  catch(e) { throw new Error('AI החזיר תשובה לא תקינה, נסה שוב'); }
+
+  if (!Array.isArray(parsed) || parsed.length === 0) throw new Error('לא התקבלו שאלות');
+
+  questions = parsed.map(q => ({
+    word: q.word,
+    correct: q.correct,
+    opts: shuffle([q.correct, ...q.distractors.slice(0, 4)])
+  }));
+}
+
+// ─── Quiz Logic ───────────────────────────────────────────
+function initQuiz() {
+  current = 0; score = 0; streak = 0;
+  answers = new Array(questions.length).fill(null);
+  const diffLabels = { easy: 'כיתה ' + gradeLabel(cfg.grade) + ' • קל', medium: 'כיתה ' + gradeLabel(cfg.grade) + ' • בינוני', hard: 'כיתה ' + gradeLabel(cfg.grade) + ' • קשה' };
+  document.getElementById('level-tag').textContent = diffLabels[cfg.diff];
+  renderQ();
+}
+
+function gradeLabel(g) {
+  const labels = ['','א\'','ב\'','ג\'','ד\'','ה\'','ו\'','ז\'','ח\'','ט\'','י\'','י"א','י"ב'];
+  return labels[g] || g;
+}
+
+function renderQ() {
+  const total = questions.length;
+  const pct = Math.round((current / total) * 100);
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('score-tag').textContent = 'ניקוד: ' + score;
+
+  if (current >= total) { showResult(); return; }
+
+  const q = questions[current];
+  const ans = answers[current];
+
+  const opts = q.opts.map((o, i) => {
+    let cls = 'opt';
+    if (ans !== null) {
+      if (o === q.correct) cls += ' correct';
+      else if (o === ans) cls += ' wrong';
+    }
+    return `<button class="${cls}" ${ans !== null ? 'disabled' : ''} onclick="choose(${i})">${o}</button>`;
+  }).join('');
+
+  let fb = '<div class="feedback" id="fb"></div>';
+  if (ans !== null) {
+    if (ans === q.correct) fb = '<div class="feedback ok show" id="fb">✓ נכון מאוד!</div>';
+    else fb = `<div class="feedback no show" id="fb">✗ התשובה הנכונה: <strong>${q.correct}</strong></div>`;
+  }
+
+  const isLast = current === total - 1;
+  document.getElementById('quiz-body').innerHTML = `
+    <div class="q-card">
+      <div class="q-num">שאלה ${current + 1} מתוך ${total}</div>
+      <div class="q-word">${q.word}</div>
+      <div class="q-hint">מה הפירוש בעברית?</div>
+      <div class="options">${opts}</div>
+      ${fb}
+    </div>
+    <div class="nav">
+      <button class="nav-btn" onclick="prev()" ${current === 0 ? 'disabled' : ''}>→ הקודמת</button>
+      <button class="nav-btn primary" onclick="next()" ${ans === null ? 'disabled' : ''}>${isLast ? 'לתוצאות ←' : 'הבאה ←'}</button>
+    </div>
+  `;
+}
+
+function choose(i) {
+  if (answers[current] !== null) return;
+  const chosen = questions[current].opts[i];
+  answers[current] = chosen;
+  if (chosen === questions[current].correct) {
+    score++; streak++;
+    if (streak >= 3) showStreak(streak);
+  } else {
+    streak = 0;
+  }
+  renderQ();
+}
+
+function next() { if (current < questions.length - 1) { current++; renderQ(); } else { current = questions.length; renderQ(); } }
+function prev() { if (current > 0) { current--; renderQ(); } }
+
+function showStreak(n) {
+  const el = document.getElementById('streak-toast');
+  el.textContent = n + ' רצף נכון! 🔥';
+  el.classList.add('show');
+  clearTimeout(streakTimer);
+  streakTimer = setTimeout(() => el.classList.remove('show'), 1800);
+}
+
+// ─── Result ───────────────────────────────────────────────
+function showResult() {
+  const total = questions.length;
+  const pct = Math.round((score / total) * 100);
+  const name = cfg.name ? cfg.name : 'כל הכבוד';
+  let emoji, title, msg;
+  if (pct >= 90) { emoji = '🏆'; title = `מושלם, ${name}!`; msg = 'תוצאה מרשימה ביותר. אתה שולט בחומר!'; }
+  else if (pct >= 75) { emoji = '🌟'; title = `יפה מאוד, ${name}!`; msg = 'תוצאה טובה. עוד קצת תרגול ותהיה מושלם.'; }
+  else if (pct >= 55) { emoji = '👍'; title = `לא רע, ${name}!`; msg = 'כדאי לחזור על המילים שפספסת ולנסות שוב.'; }
+  else { emoji = '📚'; title = `יש לנו עבודה, ${name}!`; msg = 'תרגל עוד — אתה בהחלט יכול להשתפר!'; }
+
+  showScreen('screen-result');
+  document.getElementById('result-wrap').innerHTML = `
+    <div class="result-emoji">${emoji}</div>
+    <div>
+      <div class="result-score">${score}/${total}</div>
+      <div class="result-of">${pct}%</div>
+    </div>
+    <div class="result-title">${title}</div>
+    <div class="result-msg">${msg}</div>
+    <div class="result-actions">
+      <button class="result-btn primary" onclick="replayNew()">מבחן חדש עם מילים אחרות 🔄</button>
+      <button class="result-btn secondary" onclick="backToSetup()">שנה רמה / כיתה ⚙️</button>
+    </div>
+  `;
+}
+
+async function replayNew() {
+  showScreen('screen-loading');
+  try {
+    await generateQuestions();
+    initQuiz();
+    showScreen('screen-quiz');
+  } catch(e) {
+    showScreen('screen-result');
+    document.getElementById('result-wrap').innerHTML += `<div class="error-box" style="margin-top:1rem">❌ שגיאה: ${e.message}</div>`;
+  }
+}
+
+function backToSetup() { showScreen('screen-setup'); }
+
+// ─── Utils ────────────────────────────────────────────────
+function shuffle(a) {
+  const b = [...a];
+  for (let i = b.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [b[i], b[j]] = [b[j], b[i]];
+  }
+  return b;
+}
+</script>
+</body>
+</html>
