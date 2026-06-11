@@ -29,15 +29,22 @@ html, body { min-height: 100vh; background: #f0f4ff; font-family: -apple-system,
 .dbtn.easy { color: #2ebc7a; } .dbtn.easy.sel { background: #e6f9f1; border-color: #2ebc7a; }
 .dbtn.med  { color: #f7a24f; } .dbtn.med.sel  { background: #fff8ee; border-color: #f7a24f; }
 .dbtn.hard { color: #e0455a; } .dbtn.hard.sel { background: #fdeef0; border-color: #e0455a; }
+.diff-pts { font-size: 10px; font-weight: 700; margin-top: 1px; }
 .cnt-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 7px; }
 .cbtn { border: 2px solid #dde3f5; border-radius: 11px; padding: 9px; font-size: 14px; font-weight: 700; cursor: pointer; font-family: inherit; color: #7a7f9a; background: #fff; }
 .cbtn.sel { background: #4f6ef7; color: #fff; border-color: #4f6ef7; }
 .start-btn { background: #4f6ef7; color: #fff; border: none; border-radius: 16px; padding: 15px; font-size: 17px; font-weight: 800; font-family: inherit; cursor: pointer; width: 100%; }
+.lb-btn { background: #fff; color: #4f6ef7; border: 2px solid #4f6ef7; border-radius: 16px; padding: 13px; font-size: 15px; font-weight: 800; font-family: inherit; cursor: pointer; width: 100%; }
 .err-box { background: #fdeef0; border: 2px solid #e0455a; border-radius: 12px; padding: 10px 14px; font-size: 13px; color: #e0455a; text-align: center; }
+/* QUIZ */
 .quiz-inner { width: 100%; max-width: 520px; padding: 1.2rem 1rem 2.5rem; display: flex; flex-direction: column; gap: .9rem; }
 .qhdr { display: flex; justify-content: space-between; align-items: center; }
 .lvl-tag { background: #eef1ff; color: #4f6ef7; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 99px; }
 .sc-tag { font-size: 13px; font-weight: 700; color: #7a7f9a; }
+.pts-tag { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; }
+.pts-easy { background: #e6f9f1; color: #2ebc7a; }
+.pts-medium { background: #fff8ee; color: #f7a24f; }
+.pts-hard { background: #fdeef0; color: #e0455a; }
 .prog-track { height: 6px; background: #dde3f5; border-radius: 99px; overflow: hidden; }
 .prog-fill { height: 100%; background: linear-gradient(90deg,#4f6ef7,#f7a24f); border-radius: 99px; transition: width .4s; }
 .qcard { background: #fff; border-radius: 20px; padding: 1.6rem 1.4rem 1.4rem; box-shadow: 0 2px 16px rgba(79,110,247,.08); }
@@ -57,33 +64,58 @@ html, body { min-height: 100vh; background: #f0f4ff; font-family: -apple-system,
 .nav-btn.pri { background: #4f6ef7; border-color: #4f6ef7; color: #fff; }
 .streak-toast { position: fixed; top: 14px; left: 50%; transform: translateX(-50%); background: #f7a24f; color: #fff; font-weight: 800; font-size: 13px; padding: 7px 18px; border-radius: 99px; z-index: 999; white-space: nowrap; opacity: 0; transition: opacity .25s; pointer-events: none; }
 .streak-toast.show { opacity: 1; }
-.res-inner { padding: 2.5rem 1.25rem 3rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .9rem; justify-content: center; flex: 1; }
+/* RESULT */
+.res-inner { padding: 2.5rem 1.25rem 3rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: .9rem; justify-content: center; flex: 1; max-width: 400px; margin: 0 auto; }
 .res-emoji { font-size: 60px; }
 .res-score { font-size: 50px; font-weight: 900; color: #4f6ef7; line-height: 1; }
 .res-of { font-size: 15px; color: #7a7f9a; margin-top: 2px; }
+.res-pts { font-size: 22px; font-weight: 800; color: #f7a24f; }
 .res-title { font-size: 22px; font-weight: 800; }
 .res-msg { font-size: 14px; color: #7a7f9a; line-height: 1.6; max-width: 280px; }
-.res-actions { display: flex; flex-direction: column; gap: 9px; width: 100%; max-width: 360px; margin-top: 6px; }
+.res-actions { display: flex; flex-direction: column; gap: 9px; width: 100%; margin-top: 6px; }
 .res-btn { border-radius: 13px; padding: 13px; font-size: 15px; font-weight: 800; font-family: inherit; cursor: pointer; width: 100%; border: none; }
 .res-btn.pri { background: #4f6ef7; color: #fff; }
 .res-btn.sec { background: #fff; color: #4f6ef7; border: 2px solid #dde3f5; }
-@media (max-width: 380px) { .opts { grid-template-columns: 1fr; } }
+.res-btn.gold { background: #f7a24f; color: #fff; }
+/* LEADERBOARD */
+.lb-inner { width: 100%; max-width: 520px; padding: 1.5rem 1rem 3rem; display: flex; flex-direction: column; gap: 1rem; }
+.lb-inner h2 { font-size: 22px; font-weight: 800; text-align: center; }
+.lb-inner p { font-size: 13px; color: #7a7f9a; text-align: center; margin-top: -8px; }
+.lb-table { background: #fff; border-radius: 20px; overflow: hidden; box-shadow: 0 2px 16px rgba(79,110,247,.08); }
+.lb-row { display: grid; grid-template-columns: 40px 1fr 70px 70px 60px; padding: 12px 16px; border-bottom: 1px solid #f0f0f8; align-items: center; gap: 8px; font-size: 13px; }
+.lb-row.header { background: #eef1ff; font-weight: 700; font-size: 11px; color: #7a7f9a; }
+.lb-row:last-child { border-bottom: none; }
+.lb-rank { font-weight: 800; font-size: 16px; text-align: center; }
+.lb-rank.gold { color: #f7a24f; }
+.lb-rank.silver { color: #a0a0b0; }
+.lb-rank.bronze { color: #cd7f32; }
+.lb-name { font-weight: 700; }
+.lb-pts { font-weight: 800; color: #4f6ef7; text-align: center; }
+.lb-words { text-align: center; color: #7a7f9a; }
+.lb-diff { text-align: center; font-size: 11px; font-weight: 700; padding: 2px 6px; border-radius: 99px; }
+.lb-diff.easy { background: #e6f9f1; color: #2ebc7a; }
+.lb-diff.medium { background: #fff8ee; color: #f7a24f; }
+.lb-diff.hard { background: #fdeef0; color: #e0455a; }
+.back-btn { background: #fff; border: 2px solid #dde3f5; border-radius: 12px; padding: 10px 20px; font-size: 14px; font-weight: 700; font-family: inherit; color: #7a7f9a; cursor: pointer; align-self: flex-start; }
+.loading-lb { text-align: center; padding: 2rem; color: #7a7f9a; }
+@media (max-width: 380px) { .opts { grid-template-columns: 1fr; } .lb-row { grid-template-columns: 30px 1fr 60px 50px; } }
 </style>
 </head>
 <body>
 <div class="streak-toast" id="streak-toast"></div>
 
+<!-- SETUP -->
 <div id="screen-setup" class="screen active">
   <div class="setup-inner">
     <div class="app-logo">
       <div class="icon">🧠</div>
       <h1>מבחן מילים חכם</h1>
-      <p>עובד ללא אינטרנט — מאגר מילים מובנה</p>
+      <p>עובד ללא אינטרנט • לוח מובילים חי</p>
     </div>
     <div class="card">
       <h2>הגדרות המבחן</h2>
       <div>
-        <div class="lbl">שם התלמיד (אופציונלי)</div>
+        <div class="lbl">שם התלמיד (חובה לדירוג)</div>
         <input id="inp-name" class="name-inp" type="text" placeholder="למשל: איתי" />
       </div>
       <div>
@@ -99,11 +131,11 @@ html, body { min-height: 100vh; background: #f0f4ff; font-family: -apple-system,
         <div class="word-count" id="word-count"></div>
       </div>
       <div>
-        <div class="lbl">רמת קושי</div>
+        <div class="lbl">רמת קושי — ניקוד שונה לכל רמה!</div>
         <div class="diff-row">
-          <button class="dbtn easy" data-d="easy"><span class="di">😊</span>קל</button>
-          <button class="dbtn med"  data-d="medium"><span class="di">😤</span>בינוני</button>
-          <button class="dbtn hard" data-d="hard"><span class="di">🔥</span>קשה</button>
+          <button class="dbtn easy" data-d="easy"><span class="di">😊</span>קל<span class="diff-pts" style="color:#2ebc7a">10 נק' למילה</span></button>
+          <button class="dbtn med"  data-d="medium"><span class="di">😤</span>בינוני<span class="diff-pts" style="color:#f7a24f">15 נק' למילה</span></button>
+          <button class="dbtn hard" data-d="hard"><span class="di">🔥</span>קשה<span class="diff-pts" style="color:#e0455a">20 נק' למילה</span></button>
         </div>
       </div>
       <div>
@@ -118,31 +150,68 @@ html, body { min-height: 100vh; background: #f0f4ff; font-family: -apple-system,
       <div id="setup-err" style="display:none"></div>
     </div>
     <button class="start-btn" onclick="startQuiz()">התחל מבחן ✨</button>
+    <button class="lb-btn" onclick="showLeaderboard()">🏆 לוח מובילים</button>
   </div>
 </div>
 
+<!-- QUIZ -->
 <div id="screen-quiz" class="screen">
   <div class="quiz-inner">
     <div class="qhdr">
       <div class="lvl-tag" id="lvl-tag"></div>
-      <div class="sc-tag" id="sc-tag">ניקוד: 0</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="pts-tag" id="pts-tag"></div>
+        <div class="sc-tag" id="sc-tag">ניקוד: 0</div>
+      </div>
     </div>
     <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div id="quiz-body"></div>
   </div>
 </div>
 
+<!-- RESULT -->
 <div id="screen-result" class="screen">
   <div class="res-inner" id="res-inner"></div>
 </div>
 
+<!-- LEADERBOARD -->
+<div id="screen-lb" class="screen">
+  <div class="lb-inner">
+    <button class="back-btn" onclick="showScreen('screen-setup')">← חזרה</button>
+    <h2>🏆 לוח מובילים</h2>
+    <p>מעודכן בזמן אמת מכל המכשירים</p>
+    <div id="lb-content" class="loading-lb">טוען...</div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, orderBy, query, limit } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCUkc0FamlGhIco5EX9y7ceHzP3PqMjHTA",
+  authDomain: "vocab-quiz-666b0.firebaseapp.com",
+  projectId: "vocab-quiz-666b0",
+  storageBucket: "vocab-quiz-666b0.firebasestorage.app",
+  messagingSenderId: "998747391098",
+  appId: "1:998747391098:web:541a8aef73e76b09b4a7c3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window._db = db;
+window._addDoc = addDoc;
+window._collection = collection;
+window._getDocs = getDocs;
+window._query = query;
+window._orderBy = orderBy;
+window._limit = limit;
+</script>
+
 <script>
 const GL = ['','א\'','ב\'','ג\'','ד\'','ה\'','ו\'','ז\'','ח\'','ט\'','י\'','י"א','י"ב'];
+const PTS = { easy: 10, medium: 15, hard: 20 };
 
-// ══════════════════════════════════════════════════════
-// מאגר מילים — Fry/Dolch + Israeli English curriculum
-// [english, correct-hebrew, wrong1, wrong2, wrong3, wrong4]
-// ══════════════════════════════════════════════════════
 const DB = {
   1:[
     ["cat","חתול","כלב","ציפור","דג","סוס"],["dog","כלב","חתול","פרה","חזיר","כבש"],
@@ -158,7 +227,7 @@ const DB = {
     ["fish","דג","ציפור","חתול","כלב","סוס"],["bird","ציפור","דג","חתול","כלב","חרק"],
     ["water","מים","חלב","מיץ","שמן","תה"],["milk","חלב","מים","מיץ","קפה","תה"],
     ["bread","לחם","עוגה","עוגיה","גלידה","ממתק"],["apple","תפוח","אגס","בננה","ענב","תות"],
-    ["jump","לקפץ","לרוץ","ללכת","לטוס","לשחות"],["sit","לשבת","לעמוד","ללכت","לרוץ","לשכב"],
+    ["jump","לקפץ","לרוץ","ללכת","לטוס","לשחות"],["sit","לשבת","לעמוד","ללכת","לרוץ","לשכב"],
   ],
   2:[
     ["happy","שמח","עצוב","כועס","מפוחד","בוכה"],["sad","עצוב","שמח","מצחיק","מאושר","גאה"],
@@ -198,177 +267,154 @@ const DB = {
     ["hospital","בית חולים","מרפאה","בית מרקחת","קופת חולים","מעבדה"],
     ["parent","הורה","ילד","אח","סבא","דוד"],["brother","אח","אחות","דוד","בן דוד","שכן"],
     ["sister","אחות","אח","דודה","בת דוד","חברה"],["market","שוק","חנות","מרכז קניות","סופרמרקט","מחסן"],
-    ["answer","תשובה","שאלה","בעיה","פתרון","הסבר"],["dangerous","מסוכן","בטוח","מפחיד","מזיק","רצוי"],
-    ["healthy","בריא","חולה","חזק","פעיל","טרי"],["garden","גינה","חצר","פארק","שדה","יער"],
+    ["dangerous","מסוכן","בטוח","מפחיד","מזיק","רצוי"],["healthy","בריא","חולה","חזק","פעיל","טרי"],
+    ["garden","גינה","חצר","פארק","שדה","יער"],["answer","תשובה","שאלה","בעיה","פתרון","הסבר"],
   ],
   5:[
-    ["important","חשוב","פחות חשוב","נחוץ","מעניין","קריטי"],["difficult","קשה","קל","מסובך","מאתגר","פשוט"],
-    ["simple","פשוט","מסובך","קל","ברור","בסיסי"],["famous","מפורסם","אלמוני","ידוע","בולט","מוכר"],
-    ["possible","אפשרי","בלתי אפשרי","סביר","מציאותי","ודאי"],["surprised","מופתע","צפוי","מזועזע","מרוצה","מאוכזב"],
-    ["excited","נרגש","רגוע","שלו","שמח","עצבני"],["describe","לתאר","להסביר","לספר","להגדיר","לדמות"],
-    ["explain","להסביר","לתאר","לספר","ללמד","להדגים"],["choose","לבחור","לדחות","להחליט","להעדיף","לברור"],
-    ["protect","להגן","לתקוף","לשמור","לאבטח","לסגור"],["collect","לאסוף","לזרוק","לצבור","לאגור","לאחסן"],
-    ["remember","לזכור","לשכוח","לנסות","להיזכר","לחשוב"],["forget","לשכוח","לזכור","לדעת","להיזכר","לפספס"],
-    ["modern","מודרני","עתיק","ישן","חדיש","עכשווי"],["ancient","עתיק","מודרני","חדש","ישן","קדום"],
-    ["popular","פופולרי","לא מוכר","אהוב","נפוץ","מקובל"],["achieve","להשיג","להגיע","לממש","לנצח","לזכות"],
+    ["important","חשוב","מיותר","נחוץ","מעניין","קריטי"],["difficult","קשה","קל","מסובך","מאתגר","פשוט"],
+    ["simple","פשוט","מסובך","קשה","מורכב","סבוך"],["famous","מפורסם","אלמוני","ידוע","בולט","נסתר"],
+    ["possible","אפשרי","בלתי אפשרי","סביר","מציאותי","ודאי"],["surprised","מופתע","צפוי","מזועזע","רגוע","אדיש"],
+    ["excited","נרגש","רגוע","שלו","אדיש","משועמם"],["describe","לתאר","להסתיר","לספר","להגדיר","לדמות"],
+    ["explain","להסביר","לבלבל","לספר","ללמד","להדגיש"],["choose","לבחור","לדחות","להחליט","להימנע","לברור"],
+    ["protect","להגן","לתקוף","לחשוף","לפגוע","לנטוש"],["collect","לאסוף","לזרוק","לפזר","לחלק","לאחסן"],
+    ["remember","לזכור","לשכוח","לנסות","להתעלם","לחשוב"],["forget","לשכוח","לזכור","לדעת","להיזכר","לפספס"],
+    ["modern","מודרני","עתיק","ישן","קדום","בלתי רלוונטי"],["ancient","עתיק","מודרני","חדש","עכשווי","חדיש"],
+    ["popular","פופולרי","דחוי","נדחה","לא מוכר","נשכח"],["achieve","להשיג","להפסיד","לוותר","לנכשל","לאבד"],
   ],
   6:[
-    ["culture","תרבות","מסורת","דת","אמנות","חברה"],["tradition","מסורת","תרבות","הרגל","פולחן","טקס"],
-    ["government","ממשלה","פרלמנט","מדינה","עיריה","שלטון"],["economy","כלכלה","פוליטיקה","מסחר","תעשייה","פיננסים"],
-    ["environment","סביבה","טבע","אקולוגיה","מרחב","שטח"],["pollution","זיהום","נזק","פסולת","הרס","עשן"],
-    ["technology","טכנולוגיה","מדע","הנדסה","חדשנות","מחשוב"],["communicate","לתקשר","לדבר","להעביר","לשדר","לקשר"],
-    ["influence","השפעה","כוח","שליטה","לחץ","פיקוד"],["develop","לפתח","לגדול","לשפר","להרחיב","לבנות"],
-    ["improve","לשפר","להרע","לתקן","לקדם","לחזק"],["succeed","להצליח","להיכשל","לנצח","להשיג","לזכות"],
-    ["challenge","אתגר","בעיה","קושי","מכשול","מצב"],["opportunity","הזדמנות","סיכוי","אפשרות","סיכון","בחירה"],
-    ["society","חברה","קהילה","עם","ציבור","קהל"],["community","קהילה","חברה","שכונה","עיר","ציבור"],
-    ["compare","להשוות","לבדוק","לנתח","לבחון","לדרג"],["affect","להשפיע","לשנות","לפגוע","להזיק","לגרום"],
+    ["culture","תרבות","בורות","פראות","אי-ידיעה","עצלות"],["tradition","מסורת","חידוש","מהפכה","שינוי","פריצה"],
+    ["government","ממשלה","אנרכיה","כאוס","הפקרות","עריצות"],["economy","כלכלה","פוליטיקה","מסחר","תעשייה","פיננסים"],
+    ["environment","סביבה","מעבדה","מפעל","מנהרה","מרתף"],["pollution","זיהום","ניקיון","טיהור","צמיחה","שגשוג"],
+    ["technology","טכנולוגיה","אמנות","ספרות","מוסיקה","ריקוד"],["communicate","לתקשר","להתבודד","להסתגר","להתעלם","לשתוק"],
+    ["influence","השפעה","אדישות","חוסר עניין","התעלמות","ניתוק"],["develop","לפתח","לעצור","להקפיא","לסרב","להרוס"],
+    ["improve","לשפר","להחמיר","לפגוע","להרע","לדרדר"],["succeed","להצליח","להיכשל","להתמוטט","לוותר","לנטוש"],
+    ["challenge","אתגר","קלות","פשטות","נוחות","פינוק"],["opportunity","הזדמנות","מכשול","מגבלה","חסם","קושי"],
+    ["society","חברה","בדידות","ניכור","בידוד","פירוד"],["community","קהילה","אנונימיות","ניכור","פירוד","בידוד"],
   ],
   7:[
-    ["aggressive","תוקפני","ידידותי","פסיבי","אסרטיבי","כעסן"],["confident","בטוח בעצמו","חסר ביטחון","גאוותן","עצמאי","אמיץ"],
-    ["nervous","עצבני","רגוע","שלו","חרד","מתוח"],["bored","משועמם","מעוניין","עייף","אדיש","רדום"],
-    ["curious","סקרן","אדיש","מעוניין","חוקר","שואל"],["rude","גס רוח","מנומס","עז פנים","חסר נימוס","פרוע"],
-    ["polite","מנומס","גס רוח","עדין","ישיר","זהיר"],["honest","ישר","שקרן","אמין","עקבי","אמיתי"],
+    ["aggressive","תוקפני","ידידותי","עדין","שקט","נכנע"],["confident","בטוח בעצמו","חסר ביטחון","מהסס","ביישן","פוחד"],
+    ["nervous","עצבני","רגוע","שלו","נינוח","ביטחוני"],["bored","משועמם","מעוניין","נלהב","סקרן","נרגש"],
+    ["curious","סקרן","אדיש","שאנן","משועמם","נרדם"],["rude","גס רוח","מנומס","עדין","מכובד","נחמד"],
+    ["polite","מנומס","גס רוח","בוטה","פרוע","חצוף"],["honest","ישר","שקרן","מרמה","כוזב","מזויף"],
     ["stubborn","עקשן","גמיש","פתוח","כניע","שיתופי"],["generous","נדיב","קמצן","אנוכי","חסכן","קפדן"],
-    ["selfish","אנוכי","נדיב","עצמי","חמדן","פרטי"],["brave","אמיץ","פחדן","גיבור","נועז","נכון"],
-    ["argument","ויכוח","שיחה","דיון","קטטה","עימות"],["relationship","מערכת יחסים","קשר","חברות","ידידות","זיקה"],
-    ["responsibility","אחריות","חובה","מחויבות","תפקיד","נטל"],["freedom","חופש","עצמאות","שחרור","אוטונומיה","רשות"],
-    ["justice","צדק","חוק","שיוויון","אמת","יושר"],["prejudice","דעה קדומה","אפליה","עיוות","הטיה","סטריאוטיפ"],
+    ["selfish","אנוכי","נדיב","אלטרואיסטי","נותן","מסייע"],["brave","אמיץ","פחדן","רך","מוגן","נרתע"],
+    ["argument","ויכוח","שיחה","שלום","הסכמה","הידברות"],["relationship","מערכת יחסים","ניתוק","ניכור","אדישות","פירוד"],
+    ["responsibility","אחריות","פטור","חוסר מחויבות","בריחה","פינוק"],["freedom","חופש","שיעבוד","כבילה","כליאה","עבדות"],
   ],
   8:[
-    ["ambiguous","דו-משמעי","ברור","מעורפל","סתום","מסובך"],["analyze","לנתח","לבדוק","לחקור","להעריך","לפרש"],
-    ["consequence","השלכה","תוצאה","סיבה","השפעה","תגובה"],["significant","משמעותי","חשוב","חיוני","מרכזי","בולט"],
-    ["evidence","עדות","הוכחה","ראיה","עובדה","נתון"],["hypothesis","השערה","תיאוריה","עובדה","מסקנה","הנחה"],
-    ["perspective","נקודת מבט","זווית","דעה","עמדה","גישה"],["evaluate","להעריך","לבחון","לשפוט","לנתח","לדרג"],
-    ["contradict","לסתור","להתנגד","לסכסך","לערער","לנגד"],["justify","להצדיק","להסביר","לנמק","לאמת","לאשר"],
-    ["prejudice","דעה קדומה","אפליה","הטיה","עיוות","סטריאוטיפ"],["assumption","הנחה","השערה","עובדה","דעה","פרשנות"],
-    ["abstract","מופשט","קונקרטי","עמום","תיאורטי","כללי"],["concept","מושג","רעיון","תפיסה","עיקרון","נושא"],
-    ["interpret","לפרש","להבין","להסביר","לתרגם","לנתח"],["imply","לרמוז","לציין","לטעון","להסביר","להדגיש"],
+    ["ambiguous","דו-משמעי","חד-משמעי","ברור","מפורש","מוחלט"],["analyze","לנתח","להתעלם","לפשט","לדחות","לבלבל"],
+    ["consequence","השלכה","סיבה","מקור","בסיס","שורש"],["significant","משמעותי","זניח","חסר ערך","שולי","אפסי"],
+    ["evidence","עדות","השערה","ספקולציה","אשליה","המצאה"],["hypothesis","השערה","עובדה","ודאות","הוכחה","מציאות"],
+    ["perspective","נקודת מבט","עיוורון","חד-ממדיות","קיבעון","קנאות"],["evaluate","להעריך","להתעלם","לדחות","לפסול","להשמיד"],
+    ["contradict","לסתור","לאשר","להסכים","לאמת","לתמוך"],["justify","להצדיק","להאשים","לגנות","לשפוט","לדחות"],
+    ["assumption","הנחה","ודאות","עובדה","הוכחה","אמת"],["abstract","מופשט","קונקרטי","מוחשי","ממשי","ברור"],
+    ["concept","מושג","חפץ","דבר","פריט","חומר"],["interpret","לפרש","להשמיט","לדלג","להתעלם","לסרב"],
   ],
   9:[
-    ["ambivalent","אמביוולנטי","שנוי במחלוקת","סותר","מוטה","מסובך"],["eloquent","רהוט","שוטף","מדויק","ביטויי","ורבאלי"],
-    ["empathy","הזדהות רגשית","הזדהות","הבנה","חמלה","רגישות"],["ideology","השקפת עולם","מדיניות","עמדה","השקפה","דוקטרינה"],
-    ["paradox","סתירה פנימית","סתירה","אנומליה","ניגוד","אנטיתזה"],["rhetoric","אמנות הנאום","נאום","שכנוע","טיעון","כשרון"],
-    ["phenomenon","תופעה","אירוע","עובדה","מצב","מקרה"],["synthesis","מיזוג רעיונות","מיזוג","שילוב","אינטגרציה","עיבוד"],
-    ["critique","ביקורת","הערה","הסתייגות","הערכה","ניתוח"],["obsolete","מיושן","עתיק","בלתי רלוונטי","ישן","מוחלף"],
-    ["hierarchy","מדרג","מדרג","סדר","מבנה","שכבה"],["consensus","הסכמה כללית","הסכמה","תמימות דעים","הכרעה","עמדה משותפת"],
-    ["ambiguity","עמימות","אי-בהירות","דו-משמעות","עקמומיות","מורכבות"],["integrity","יושרה","מוסר","הגינות","ישרות","מהימנות"],
+    ["ambivalent","שנוי במחלוקת","חד-משמעי","ברור","פשוט","מוחלט"],["eloquent","רהוט","מגמגם","אילם","מבולבל","שותק"],
+    ["empathy","הזדהות רגשית","אדישות","קור רוח","ניתוק","ניכור"],["ideology","השקפת עולם","חוסר דעה","אדישות","ספקנות","ריקנות"],
+    ["paradox","סתירה פנימית","הגיון","עקביות","בהירות","פשטות"],["rhetoric","אמנות הנאום","שתיקה","גמגום","ערפול","שטחיות"],
+    ["phenomenon","תופעה","שגרה","שגרתיות","רגיל","יומיומי"],["synthesis","מיזוג רעיונות","פירוד","הפרדה","פיצול","חלוקה"],
+    ["critique","ביקורת","שבח","הלל","פאר","מחמאה"],["obsolete","מיושן","עדכני","חדשני","מתקדם","רלוונטי"],
+    ["hierarchy","מדרג","שוויון","שטיחות","אחידות","חד-ממדיות"],["consensus","הסכמה כללית","מחלוקת","פילוג","כאוס","ויכוח"],
+    ["integrity","יושרה","שחיתות","כזב","רמאות","מרמה"],["ambiguity","עמימות","בהירות","פשטות","חד-משמעיות","שקיפות"],
   ],
   10:[
-    ["apprehensive","חרד","מפחד","דואג","מוטרד","חשדן"],["benevolent","טוב לב","אדיב","נדיב","חסדן","מיטיב"],
-    ["circumspect","זהיר","פזיז","נמהר","קל דעת","חסר זהירות"],["diligent","חרוץ","עצלן","רשלן","אדיש","מתרשל"],
-    ["eloquence","רהיטות","שטף","ניסוח","ביטוי","כריזמה"],["fallacy","כשל לוגי","שגיאה","טעות","הטעיה","מגמה"],
-    ["impartial","אובייקטיבי","חסר פניות","ניטרלי","שוויוני","הוגן"],["scrutiny","בדיקה מדוקדקת","ניתוח","חקירה","סקירה","פיקוח"],
-    ["tenacious","עיקש","ויתרן","רפה","כניע","מתפשר"],["vindicate","לשקם","לזכות","להצדיק","לאמת","לנקות שם"],
-    ["advocate","לתמוך","להסביר","לטעון","לייצג","לקדם"],["unprecedented","חסר תקדים","ייחודי","חדשני","חדש","בלתי רגיל"],
-    ["contentious","שנוי במחלוקת","ויכוחי","פולמוסי","רגיש","מאתגר"],["mitigate","להקל","לרכך","לצמצם","לפחת","לפתור"],
+    ["apprehensive","חרד","רגוע","שלו","נינוח","ביטחוני"],["benevolent","טוב לב","רשע","אכזר","עוין","קנאי"],
+    ["circumspect","זהיר","פזיז","נמהר","חסר זהירות","קל דעת"],["diligent","חרוץ","עצלן","רשלן","אדיש","מתרשל"],
+    ["fallacy","כשל לוגי","אמת","הוכחה","עובדה","ודאות"],["impartial","אובייקטיבי","מוטה","משוחד","חד צדדי","פניני"],
+    ["scrutiny","בדיקה מדוקדקת","התעלמות","רשלנות","אדישות","שטחיות"],["tenacious","עיקש","ויתרן","רפה","כניע","מתפשר"],
+    ["vindicate","לזכות ולשקם","להרשיע","לגנות","לשפוט","לאשים"],["advocate","לתמוך","להתנגד","לדחות","לגנות","לבקר"],
+    ["unprecedented","חסר תקדים","שגרתי","יומיומי","רגיל","מוכר"],["contentious","שנוי במחלוקת","מוסכם","ברור","מקובל","פשוט"],
+    ["mitigate","להקל","להחמיר","להגביר","להעצים","להחריף"],["eloquence","רהיטות","גמגום","שתיקה","ערפול","עצבנות"],
   ],
   11:[
-    ["epistemology","תורת הידע","תורת הידע","מדע הידע","פילוסופיה","תורת ההכרה"],
-    ["categorical","קטגורי","מוחלט","ברור","חד-משמעי","חלוט"],["dialectic","שיח ניגודים","ויכוח","שיח","ניגוד","דיון"],
-    ["empirical","מבוסס ניסיון","מבוסס ניסיון","ניסויי","מדעי","מוכח"],["hegemony","שליטה דומיננטית","שליטה","דומיננטיות","עליונות","פיקוד"],
-    ["juxtapose","להציב זה לצד זה","להשוות","להנגיד","לסדר","לחלק"],["nuance","ניואנס","דקות","עדינות","פרט","גוון"],
-    ["paradigm","מודל מחשבה","מודל","תבנית","מסגרת","עקרון"],["postulate","להניח","לטעון","לקבוע","להציב","לבסס"],
-    ["pragmatic","פרגמטי","מעשי","ריאליסטי","תכליתי","ממוקד"],["reductive","מצמצם","מפשט","מקטין","מדלל","מוציא"],
-    ["subjective","סובייקטיבי","אישי","מוטה","נטוי","יחסי"],["transcend","לעלות מעל","לחרוג","לעבור","להתעלות","לחצות"],
+    ["epistemology","תורת הידע","תורת הטבע","תורת הכלכלה","תורת המדינה","תורת האמנות"],
+    ["categorical","מוחלט","מותנה","חלקי","גמיש","יחסי"],["dialectic","שיח ניגודים","הסכמה","מונולוג","אחידות","פשרה"],
+    ["empirical","מבוסס ניסיון","תיאורטי","ספקולטיבי","דמיוני","מדומיין"],["hegemony","שליטה דומיננטית","שוויון","איזון","חולשה","כניעה"],
+    ["juxtapose","להציב זה לצד זה","להפריד","להסתיר","להסיר","לחסל"],["nuance","עדינות וגוון","גסות","חד-ממדיות","שטחיות","קיצוניות"],
+    ["paradigm","מודל מחשבה","כאוס","אנרכיה","חוסר סדר","פירוד"],["postulate","להניח","להוכיח","לאמת","לשלול","לסתור"],
+    ["pragmatic","מעשי","אידיאליסטי","דמיוני","בלתי מציאותי","אוטופי"],["reductive","מצמצם ומפשט","מרחיב","מעמיק","מורכב","עשיר"],
+    ["subjective","אישי וסובייקטיבי","אובייקטיבי","ניטרלי","מדעי","עובדתי"],["transcend","לעלות מעל","לשקוע","לרדת","להיכלא","להישבר"],
   ],
   12:[
-    ["anachronism","טעות זמנית","טעות זמנית","הגזמה","סטייה","חריגה"],
-    ["antithesis","ניגוד מוחלט","ניגוד","הפך","קוטב","דיכוטומיה"],
-    ["axiom","אמת מוסכמת","עיקרון","הנחה מוסכמת","אמת","עובדה בסיסית"],
-    ["catharsis","שחרור רגשי","ריקון רגשי","טיהור","שחרור","הקלה"],
-    ["cognizant","מודע","מכיר","ערני","מבחין","תופס"],
-    ["delineate","לתאר בפירוט","להגדיר","לשרטט","לפרט","להבהיר"],
-    ["enigmatic","אניגמטי","מסתורי","חידתי","סתום","לא ברור"],
-    ["ephemeral","חולף","קצר מועד","זמני","רגעי","עובר"],
-    ["harbinger","מבשר","סימן","נביא","קדמון","אות"],
-    ["impetus","דחף","מניע","השראה","תמריץ","גירוי"],
-    ["juxtaposition","הצבה זה לצד זה","ניגוד","השוואה","הנגדה","הקבלה"],
-    ["laconic","לאקוני","קצר","תמציתי","ממוקד","מדויק"],
-    ["mercurial","משתנה","לא צפוי","תנודתי","גחמני","פכפכן"],
-    ["nuanced","עדין","מורכב","דקדקני","מפורט","עשיר"],
-    ["oscillate","להתנדנד","לנוע","לסטות","להשתנות","להתחלף"],
-    ["pragmatism","גישה מעשית","מעשיות","ריאליזם","תכליתיות","ישירות"],
+    ["anachronism","טעות זמנית","דיוק היסטורי","עדכניות","תיאום","סנכרון"],
+    ["antithesis","ניגוד מוחלט","זהות","דמיון","הקבלה","התאמה"],
+    ["axiom","אמת מוסכמת","שקר","ספק","אשליה","המצאה"],
+    ["catharsis","שחרור רגשי","דיכוי","הצנעה","כיבוש","חסימה"],
+    ["cognizant","מודע ומכיר","עיוור","בור","חסר ידע","מנותק"],
+    ["delineate","לתאר בפירוט","לטשטש","להסתיר","לסתום","לערפל"],
+    ["enigmatic","מסתורי וחידתי","גלוי","שקוף","ברור","פשוט"],
+    ["ephemeral","חולף וקצר מועד","נצחי","קבוע","מתמיד","אינסופי"],
+    ["harbinger","מבשר ואות","מסיים","מסכם","מסתיר","מאחר"],
+    ["impetus","דחף ותמריץ","עצירה","בלימה","האטה","חסימה"],
+    ["juxtaposition","הנגדה והשוואה","אחידות","זהות","שוויון","התאמה"],
+    ["laconic","קצר ותמציתי","פרולי","מילולי","ארוך","מפורט"],
+    ["mercurial","משתנה ובלתי צפוי","יציב","קבוע","עקבי","אמין"],
+    ["nuanced","עדין ומורכב","גס","שטחי","חד-ממדי","מוגזם"],
+    ["ephemeral","חולף","נצחי","קבוע","מתמיד","אינסופי"],
+    ["pragmatism","גישה מעשית","אידיאליזם","אוטופיה","חלומנות","תיאוריזם"],
   ]
 };
 
-// Group grades into bands for difficulty
 function getWordPool(grade, diff) {
   const g = parseInt(grade);
   let grades;
-  if (diff === 'easy') {
-    grades = [Math.max(1, g-2), Math.max(1, g-1)];
-  } else if (diff === 'medium') {
-    grades = [Math.max(1, g-1), g];
-  } else {
-    grades = [g, Math.min(12, g+1)];
-  }
-  let pool = [];
-  grades.forEach(gr => {
-    const key = String(gr);
-    if (DB[key]) pool = pool.concat(DB[key]);
-    else {
-      // find nearest grade
-      const keys = Object.keys(DB).map(Number).sort((a,b)=>Math.abs(a-gr)-Math.abs(b-gr));
-      if (DB[keys[0]]) pool = pool.concat(DB[keys[0]]);
-    }
-  });
-  // Always include current grade
-  if (DB[g]) pool = pool.concat(DB[g]);
-  // Deduplicate by word
-  const seen = new Set();
-  return pool.filter(w => { if(seen.has(w[0])) return false; seen.add(w[0]); return true; });
+  if (diff==='easy') grades=[Math.max(1,g-2),Math.max(1,g-1)];
+  else if (diff==='medium') grades=[Math.max(1,g-1),g];
+  else grades=[g,Math.min(12,g+1)];
+  let pool=[];
+  grades.forEach(gr=>{const k=String(gr);if(DB[k])pool=pool.concat(DB[k]);});
+  if(DB[g])pool=pool.concat(DB[g]);
+  const seen=new Set();
+  return pool.filter(w=>{if(seen.has(w[0]))return false;seen.add(w[0]);return true;});
 }
 
 function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
 
 let cfg={grade:null,diff:null,count:20,name:''};
-let questions=[],cur=0,score=0,answers=[],streak=0,stTimer;
+let questions=[],cur=0,score=0,totalPts=0,answers=[],streak=0,stTimer;
 
 document.querySelectorAll('.gbtn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.gbtn').forEach(x=>x.classList.remove('sel'));
-  b.classList.add('sel'); cfg.grade=+b.dataset.g;
-  const pool = getWordPool(cfg.grade, cfg.diff||'medium');
-  document.getElementById('word-count').textContent = pool.length + ' מילים במאגר לרמה זו';
+  b.classList.add('sel');cfg.grade=+b.dataset.g;
+  const pool=getWordPool(cfg.grade,cfg.diff||'medium');
+  document.getElementById('word-count').textContent=pool.length+' מילים במאגר לרמה זו';
 }));
 document.querySelectorAll('.dbtn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.dbtn').forEach(x=>x.classList.remove('sel'));
-  b.classList.add('sel'); cfg.diff=b.dataset.d;
-  if(cfg.grade) {
-    const pool = getWordPool(cfg.grade, cfg.diff);
-    document.getElementById('word-count').textContent = pool.length + ' מילים במאגר לרמה זו';
-  }
+  b.classList.add('sel');cfg.diff=b.dataset.d;
+  if(cfg.grade){const pool=getWordPool(cfg.grade,cfg.diff);document.getElementById('word-count').textContent=pool.length+' מילים במאגר לרמה זו';}
 }));
 document.querySelectorAll('.cbtn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.cbtn').forEach(x=>x.classList.remove('sel'));
-  b.classList.add('sel'); cfg.count=+b.dataset.c;
+  b.classList.add('sel');cfg.count=+b.dataset.c;
 }));
 
-function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+window.showScreen=function(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-function startQuiz(){
+window.startQuiz=function(){
   cfg.name=document.getElementById('inp-name').value.trim();
   if(!cfg.grade||!cfg.diff){
     const e=document.getElementById('setup-err');e.style.display='block';
     e.innerHTML='<div class="err-box">⚠️ נא לבחור כיתה ורמת קושי</div>';return;
   }
-  const pool = getWordPool(cfg.grade, cfg.diff);
-  const n = Math.min(cfg.count, pool.length);
-  const picked = shuffle(pool).slice(0, n);
-  questions = picked.map(row => ({
-    word: row[0], correct: row[1],
-    opts: shuffle([row[1], row[2], row[3], row[4], row[5]]).slice(0,5)
-  }));
-  cur=0;score=0;streak=0;answers=new Array(questions.length).fill(null);
+  const pool=getWordPool(cfg.grade,cfg.diff);
+  const n=Math.min(cfg.count,pool.length);
+  questions=shuffle(pool).slice(0,n).map(row=>({word:row[0],correct:row[1],opts:shuffle([row[1],row[2],row[3],row[4],row[5]]).slice(0,5)}));
+  cur=0;score=0;totalPts=0;streak=0;answers=new Array(questions.length).fill(null);
   const dl={easy:'קל',medium:'בינוני',hard:'קשה'};
+  const ptsCls={easy:'pts-easy',medium:'pts-medium',hard:'pts-hard'};
   document.getElementById('lvl-tag').textContent='כיתה '+GL[cfg.grade]+' • '+dl[cfg.diff];
-  showScreen('screen-quiz');
-  renderQ();
+  document.getElementById('pts-tag').className='pts-tag '+ptsCls[cfg.diff];
+  document.getElementById('pts-tag').textContent=PTS[cfg.diff]+' נק\' למילה';
+  showScreen('screen-quiz');renderQ();
 }
 
 function renderQ(){
   const total=questions.length;
   document.getElementById('prog-fill').style.width=Math.round(cur/total*100)+'%';
-  document.getElementById('sc-tag').textContent='ניקוד: '+score;
+  document.getElementById('sc-tag').textContent='ניקוד: '+totalPts;
   if(cur>=total){showResult();return;}
   const q=questions[cur],ans=answers[cur];
   const opts=q.opts.map((o,i)=>{
@@ -377,7 +423,10 @@ function renderQ(){
     return`<button class="${cls}" ${ans!==null?'disabled':''} onclick="choose(${i})">${o}</button>`;
   }).join('');
   let fb='<div class="fb"></div>';
-  if(ans!==null)fb=ans===q.correct?`<div class="fb ok">✓ נכון מאוד!</div>`:`<div class="fb no">✗ התשובה הנכונה: <strong>${q.correct}</strong></div>`;
+  if(ans!==null){
+    if(ans===q.correct)fb=`<div class="fb ok">✓ נכון! +${PTS[cfg.diff]} נקודות</div>`;
+    else fb=`<div class="fb no">✗ התשובה הנכונה: <strong>${q.correct}</strong></div>`;
+  }
   const isLast=cur===total-1;
   document.getElementById('quiz-body').innerHTML=`
     <div class="qcard">
@@ -392,36 +441,111 @@ function renderQ(){
     </div>`;
 }
 
-function choose(i){
+window.choose=function(i){
   if(answers[cur]!==null)return;
   const o=questions[cur].opts[i];answers[cur]=o;
-  if(o===questions[cur].correct){score++;streak++;if(streak>=3)showStreak(streak);}else streak=0;
+  if(o===questions[cur].correct){
+    score++;totalPts+=PTS[cfg.diff];streak++;
+    if(streak>=3)showStreak(streak);
+  }else{streak=0;}
   renderQ();
 }
-function next(){if(cur<questions.length-1){cur++;renderQ();}else showResult();}
-function prev(){if(cur>0){cur--;renderQ();}}
+window.next=function(){if(cur<questions.length-1){cur++;renderQ();}else showResult();}
+window.prev=function(){if(cur>0){cur--;renderQ();}}
 function showStreak(n){const el=document.getElementById('streak-toast');el.textContent=n+' רצף נכון! 🔥';el.classList.add('show');clearTimeout(stTimer);stTimer=setTimeout(()=>el.classList.remove('show'),1800);}
 
-function showResult(){
+async function showResult(){
   const total=questions.length;
   const fs=answers.filter((a,i)=>a===questions[i].correct).length;
   const pct=Math.round(fs/total*100);
-  const name=cfg.name||'';
+  const name=cfg.name||'תלמיד';
   let emoji,title,msg;
-  if(pct>=90){emoji='🏆';title=`מושלם${name?', '+name:''}!`;msg='תוצאה מרשימה. אתה שולט בחומר!';}
-  else if(pct>=75){emoji='🌟';title=`יפה מאוד${name?', '+name:''}!`;msg='תוצאה טובה. עוד קצת תרגול ותהיה מושלם.';}
-  else if(pct>=55){emoji='👍';title=`לא רע${name?', '+name:''}!`;msg='כדאי לחזור על המילים שפספסת.';}
-  else{emoji='📚';title=`יש לנו עבודה${name?', '+name:''}!`;msg='תרגל עוד — אתה בהחלט יכול להשתפר!';}
+  if(pct>=90){emoji='🏆';title=`מושלם, ${name}!`;msg='תוצאה מרשימה!';}
+  else if(pct>=75){emoji='🌟';title=`יפה מאוד, ${name}!`;msg='תוצאה טובה מאוד!';}
+  else if(pct>=55){emoji='👍';title=`לא רע, ${name}!`;msg='כדאי לתרגל עוד.';}
+  else{emoji='📚';title=`ממשיכים להתאמן, ${name}!`;msg='תרגל עוד — אתה יכול!';}
+
   showScreen('screen-result');
   document.getElementById('res-inner').innerHTML=`
     <div class="res-emoji">${emoji}</div>
     <div><div class="res-score">${fs}/${total}</div><div class="res-of">${pct}%</div></div>
+    <div class="res-pts">🏅 ${totalPts} נקודות</div>
     <div class="res-title">${title}</div>
     <div class="res-msg">${msg}</div>
+    <div id="save-status" style="font-size:13px;color:#7a7f9a">שומר לדירוג...</div>
     <div class="res-actions">
-      <button class="res-btn pri" onclick="startQuiz()">שחק שוב עם מילים אחרות 🔄</button>
-      <button class="res-btn sec" onclick="showScreen('screen-setup')">שנה רמה / כיתה ⚙️</button>
+      <button class="res-btn gold" onclick="showLeaderboard()">🏆 לוח מובילים</button>
+      <button class="res-btn pri" onclick="startQuiz()">שחק שוב 🔄</button>
+      <button class="res-btn sec" onclick="showScreen('screen-setup')">שנה הגדרות ⚙️</button>
     </div>`;
+
+  // Save to Firebase
+  if(cfg.name && window._db){
+    try{
+      await window._addDoc(window._collection(window._db,'scores'),{
+        name: cfg.name,
+        grade: cfg.grade,
+        diff: cfg.diff,
+        score: fs,
+        total: total,
+        pts: totalPts,
+        pct: pct,
+        ts: Date.now()
+      });
+      document.getElementById('save-status').textContent='✓ נשמר בדירוג!';
+    }catch(e){
+      document.getElementById('save-status').textContent='לא נשמר (אין אינטרנט)';
+    }
+  } else if(!cfg.name){
+    document.getElementById('save-status').textContent='הכנס שם כדי להופיע בדירוג';
+  }
+}
+
+window.showLeaderboard=async function(){
+  showScreen('screen-lb');
+  document.getElementById('lb-content').innerHTML='<div class="loading-lb">טוען נתונים... ⏳</div>';
+  if(!window._db){
+    document.getElementById('lb-content').innerHTML='<div class="loading-lb">אין חיבור לאינטרנט</div>';
+    return;
+  }
+  try{
+    const q=window._query(window._collection(window._db,'scores'),window._orderBy('pts','desc'),window._limit(50));
+    const snap=await window._getDocs(q);
+    const rows=[];
+    snap.forEach(doc=>rows.push(doc.data()));
+
+    // Best score per student
+    const best={};
+    rows.forEach(r=>{
+      if(!best[r.name]||r.pts>best[r.name].pts)best[r.name]=r;
+    });
+    const sorted=Object.values(best).sort((a,b)=>b.pts-a.pts);
+
+    if(sorted.length===0){
+      document.getElementById('lb-content').innerHTML='<div class="loading-lb">אין תוצאות עדיין — היה הראשון! 🚀</div>';
+      return;
+    }
+
+    const diffHe={easy:'קל',medium:'בינוני',hard:'קשה'};
+    const rankIcon=['🥇','🥈','🥉'];
+    let html='<div class="lb-table">';
+    html+='<div class="lb-row header"><div>מקום</div><div>שם</div><div style="text-align:center">נקודות</div><div style="text-align:center">מילים</div><div style="text-align:center">רמה</div></div>';
+    sorted.forEach((r,i)=>{
+      const rank=i<3?rankIcon[i]:`${i+1}`;
+      const rankCls=i===0?'gold':i===1?'silver':i===2?'bronze':'';
+      html+=`<div class="lb-row">
+        <div class="lb-rank ${rankCls}">${rank}</div>
+        <div class="lb-name">${r.name}</div>
+        <div class="lb-pts">${r.pts}</div>
+        <div class="lb-words">${r.score}/${r.total}</div>
+        <div><span class="lb-diff ${r.diff}">${diffHe[r.diff]||r.diff}</span></div>
+      </div>`;
+    });
+    html+='</div>';
+    document.getElementById('lb-content').innerHTML=html;
+  }catch(e){
+    document.getElementById('lb-content').innerHTML='<div class="loading-lb">שגיאה בטעינת הדירוג</div>';
+  }
 }
 </script>
 </body>
